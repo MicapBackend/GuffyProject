@@ -1,5 +1,6 @@
 package org.micap.login_registro.repository;
 
+import org.micap.login_registro.entity.Account;
 import org.micap.login_registro.entity.User;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
@@ -10,5 +11,5 @@ import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
  * Time: 11:23
  */
 
-public interface UserDao extends ReactiveMongoRepository<User,String> {
+public interface AccountDao extends ReactiveMongoRepository<Account,String> {
 }

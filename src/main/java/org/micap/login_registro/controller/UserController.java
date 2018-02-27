@@ -1,9 +1,6 @@
 package org.micap.login_registro.controller;
 
-import org.micap.login_registro.entity.User;
-import org.micap.login_registro.repository.UserDaoImp;
-import org.micap.login_registro.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.micap.login_registro.service.AccountService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -24,7 +21,7 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 public class UserController {
 
     @Bean
-    RouterFunction<ServerResponse> Routes(UserService userService) {
+    RouterFunction<ServerResponse> Routes(AccountService userService) {
         return nest(path("/user"),
                 route(
                         GET("/")        , Req -> userService.getUsers(Req)

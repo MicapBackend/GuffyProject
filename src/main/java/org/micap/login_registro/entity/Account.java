@@ -3,25 +3,26 @@ package org.micap.login_registro.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.Date;
 
 /**
  * Created by Warren Stehen Aroni Soto.
  * User: warrenxxx
  * Date: 27/02/2018
- * Time: 11:23
+ * Time: 13:32
  */
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Document
-public class User {
-    private String firstName;
-    private String lastName;
-    private Date birthDate;
-    private String gender;
+public class Account {
+    private Object _id;
+    private String email;
+    private String password;
+    private String userName;
+    private String []roles;
+
+    private Audit audit;
+    private User user;
 }

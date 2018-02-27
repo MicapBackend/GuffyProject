@@ -2,8 +2,7 @@ package org.micap.login_registro;
 
 import org.bson.types.ObjectId;
 import org.micap.login_registro.entity.User;
-import org.micap.login_registro.repository.UserDao;
-import org.micap.login_registro.repository.UserDaoImp;
+import org.micap.login_registro.repository.AccountDao;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,7 +14,7 @@ import java.util.stream.Stream;
 @SpringBootApplication
 public class LoginRegistroApplication {
 	@Bean
-	CommandLineRunner demo(UserDao userDao){
+	CommandLineRunner demo(AccountDao userDao){
 		return args->{
 			userDao.deleteAll()
 					.subscribe(null,null,()->

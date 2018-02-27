@@ -3,8 +3,9 @@ package org.micap.login_registro.service;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
+import org.micap.login_registro.entity.Account;
 import org.micap.login_registro.entity.User;
-import org.micap.login_registro.repository.UserDaoImp;
+import org.micap.login_registro.repository.AccountDaoImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -25,17 +26,25 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 @AllArgsConstructor
 @NoArgsConstructor
 @Service
-public class UserService {
+public class AccountService {
+
     @Autowired
-    private UserDaoImp accountDaoImp;
+    private AccountDaoImp accountDaoImp;
 
 
     public Mono<ServerResponse> getUsers(ServerRequest serverRequest){
-        return ok().body(accountDaoImp.userDao.findAll(),User.class);
+        return ok().body(accountDaoImp.accountDao.findAll().map(e->{
+            e.set_id(e.get_id().toString());
+            e.setAudit(null);
+            return e;
+        }),Account.class);
     }
     public Mono<ServerResponse> getUser(ServerRequest serverRequest){
-        return ok().body(accountDaoImp.userDao.findById(serverRequest.pathVariable("id")),User.class);
-    }
+        Account account =accountDaoImp.accountDao.findById(serverRequest.pathVariable("id")).block();
+        account.set_id(account.get_id().toString());
+        account.setAudit(null);
+        return ok().body(Mono.just(account),Account.class);
+    }/*
     public Mono<ServerResponse> createUser(ServerRequest serverRequest){
         User user =serverRequest.bodyToMono(User.class).block();
         user.set_id(new ObjectId());
@@ -44,7 +53,8 @@ public class UserService {
         user.setUserCreated(user.get_id());
         user.setUserModify(user.get_id());
         return ok().body(accountDaoImp.userDao.insert(user),User.class);
-    }
+    }*/
+
     /*
     public Mono<ServerResponse> UserOfAccount(ServerRequest req){
         return ok().body( accountDaoImp.UserOfAccount(req.bodyToMono(User.class).block()),User.class);
