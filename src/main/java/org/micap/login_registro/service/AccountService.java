@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.micap.login_registro.entity.Account;
+import org.micap.login_registro.entity.Audit;
 import org.micap.login_registro.entity.User;
 import org.micap.login_registro.repository.AccountDaoImp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -14,6 +16,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.Date;
 
+import static org.springframework.web.reactive.function.BodyInserters.fromObject;
+import static org.springframework.web.reactive.function.server.ServerResponse.notFound;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
 /**
@@ -33,27 +37,67 @@ public class AccountService {
 
 
     public Mono<ServerResponse> getUsers(ServerRequest serverRequest){
-        return ok().body(accountDaoImp.accountDao.findAll().map(e->{
-            e.set_id(e.get_id().toString());
-            e.setAudit(null);
-            return e;
-        }),Account.class);
+        return ok().body(accountDaoImp.accountDao.findAll().map(
+                account->
+                        account
+                                .set_id(account.get_id().toString())
+                                .setAudit(null)
+        ),Account.class);
     }
+
     public Mono<ServerResponse> getUser(ServerRequest serverRequest){
+        /*
         Account account =accountDaoImp.accountDao.findById(serverRequest.pathVariable("id")).block();
         account.set_id(account.get_id().toString());
         account.setAudit(null);
         return ok().body(Mono.just(account),Account.class);
-    }/*
+        */
+        return accountDaoImp.accountDao.findById(serverRequest.pathVariable("id"))
+                        .flatMap(
+                                account->ok()
+                                        .contentType(MediaType.APPLICATION_JSON)
+                                        .body(fromObject(
+                                                account
+                                                        .setAudit(null)
+                                                        .setIdToString()
+                                                )
+                                        )
+                        )
+                        .switchIfEmpty(notFound().build());
+    }
     public Mono<ServerResponse> createUser(ServerRequest serverRequest){
-        User user =serverRequest.bodyToMono(User.class).block();
-        user.set_id(new ObjectId());
-        user.setDateCreate(new Date());
-        user.setDateModify(new Date());
-        user.setUserCreated(user.get_id());
-        user.setUserModify(user.get_id());
-        return ok().body(accountDaoImp.userDao.insert(user),User.class);
-    }*/
+/*        Account account =serverRequest.bodyToMono(Account.class).block();
+        account.set_id(new ObjectId());
+        account.setAudit(new Audit(new Date(),new Date(),account.get_id(),account.get_id()));*/
+        return ok().body(accountDaoImp.accountDao.insert(
+                serverRequest.bodyToMono(Account.class)
+                        .block()
+                        .set_id(new ObjectId())
+                        .createNewAudit()
+        ),Account.class);
+    }
+
+    public Mono<ServerResponse> modifyUser(ServerRequest serverRequest){
+/*        Account account =serverRequest.bodyToMono(Account.class).block();
+        account.set_id(new ObjectId());
+        account.setAudit(new Audit(new Date(),new Date(),account.get_id(),account.get_id()));*/
+        return ok().body(accountDaoImp.accountDao.save(
+                serverRequest.bodyToMono(Account.class)
+                        .block()
+                        .set_id(new ObjectId())
+                        .createNewAudit()
+        ),Account.class);
+    }
+    public Mono<ServerResponse> removeUser(ServerRequest serverRequest){
+/*        Account account =serverRequest.bodyToMono(Account.class).block();
+        account.set_id(new ObjectId());
+        account.setAudit(new Audit(new Date(),new Date(),account.get_id(),account.get_id()));*/
+        return accountDaoImp.accountDao.findById(serverRequest.pathVariable("id"))
+                .flatMap(
+                        account->ok().build(accountDaoImp.accountDao.deleteById(serverRequest.pathVariable("id")))
+                )
+                .switchIfEmpty(notFound().build());
+    }
 
     /*
     public Mono<ServerResponse> UserOfAccount(ServerRequest req){
@@ -64,5 +108,4 @@ public class AccountService {
         return ok().body(accountDaoImp.accountDao.findAll(),User.class);
     }
     */
-
 }

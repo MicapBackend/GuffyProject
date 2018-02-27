@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 /**
  * Created by Warren Stehen Aroni Soto.
  * User: warrenxxx
@@ -25,4 +27,46 @@ public class Account {
 
     private Audit audit;
     private User user;
+
+    public Account set_id(final Object _id) {
+        this._id = _id;
+        return this;
+    }
+
+    public Account setEmail(final String email) {
+        this.email = email;
+        return this;
+    }
+
+    public Account setPassword(final String password) {
+        this.password = password;
+        return this;
+    }
+
+    public Account setUserName(final String userName) {
+        this.userName = userName;
+        return this;
+    }
+
+    public Account setRoles(final String[] roles) {
+        this.roles = roles;
+        return this;
+    }
+
+    public Account setAudit(final Audit audit) {
+        this.audit = audit;
+        return this;
+    }
+
+    public Account setUser(final User user) {
+        this.user = user;
+        return this;
+    }
+
+    public Account setIdToString(){
+        return set_id(get_id().toString());
+    }
+    public Account createNewAudit(){
+        return setAudit(new Audit(new Date(),new Date(),get_id(),get_id()));
+    }
 }

@@ -29,6 +29,10 @@ public class UserController {
                         GET("/{id}")    , Req -> userService.getUser(Req)
                 ).andRoute(
                         POST("/")       , Req -> userService.createUser(Req)
+                ).andRoute(
+                        PUT("/")        , Req -> userService.modifyUser(Req)
+                ).andRoute(
+                        DELETE("/{id}") , Req -> userService.removeUser(Req)
                 )
         );
     }

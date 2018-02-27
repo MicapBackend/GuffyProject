@@ -24,4 +24,25 @@ public class User {
     private String lastName;
     private Date birthDate;
     private String gender;
+
+    public User setFirstName(final String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+
+    public User setLastName(final String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    public User setBirthDate(final Date birthDate) {
+        this.birthDate = birthDate;
+        return this;
+    }
+
+    public User setGender(final String gender) {
+        this.gender = gender;
+        return this;
+    }
 }
