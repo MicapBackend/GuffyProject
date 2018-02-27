@@ -1,6 +1,6 @@
 package org.micap.login_registro.repository;
 
-import org.micap.login_registro.entity.Account;
+
 import org.micap.login_registro.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.ReactiveMongoOperations;
@@ -11,26 +11,27 @@ import reactor.core.publisher.Flux;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 /**
- * Account Implementation to Database dto class
- * Create by Warren Stephen Aroni soto
- * Creation Date 24/02/2018
+ * Created by Warren Stehen Aroni Soto.
+ * User: warrenxxx
+ * Date: 27/02/2018
+ * Time: 11:23
  */
+
 @Service
-public class AccountDaoImp {
+public class UserDaoImp {
     @Autowired
-    public AccountDao accountDao;
+    public UserDao userDao;
 
     @Autowired
     public ReactiveMongoOperations reactiveMongoOperations;
 
-
-    public Flux<User> UserOfAccount(Account account){
-        System.out.println("-->"+account);
-        return reactiveMongoOperations.aggregate(Aggregation.newAggregation(Account.class,
+    /*
+    public Flux<User> UserOfAccount(User account){
+        return reactiveMongoOperations.aggregate(Aggregation.newAggregation(User.class,
                 Aggregation.match(where("_id").is(account.get_id()))
                 ,Aggregation.project("user")
                 ,Aggregation.replaceRoot("user")
                 )
                 ,"account",User.class);
-    }
+        }*/
 }
