@@ -27,7 +27,7 @@ public class LoginRegistroApplication {
 													name+"_as123@gmail.com",
 													"123456",
 													name+"xxx",
-													new String[]{"user","admi"},
+													"user",
 													new Audit(
 														new Date(),
 														new Date(),

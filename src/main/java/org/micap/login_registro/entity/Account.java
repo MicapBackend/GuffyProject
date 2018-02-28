@@ -23,7 +23,7 @@ public class Account {
     private String email;
     private String password;
     private String userName;
-    private String []roles;
+    private String roles;
 
     private Audit audit;
     private User user;
@@ -48,7 +48,7 @@ public class Account {
         return this;
     }
 
-    public Account setRoles(final String[] roles) {
+    public Account setRoles(final String roles) {
         this.roles = roles;
         return this;
     }
