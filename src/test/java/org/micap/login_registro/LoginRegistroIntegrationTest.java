@@ -65,7 +65,7 @@ public class LoginRegistroIntegrationTest {
 								name+"_as123@gmail.com",
 								"123456",
 								name+"xxx",
-								new String[]{"user","admi"},
+"admi",
 								new Audit(
 										new Date(),
 										new Date(),
@@ -100,7 +100,7 @@ public class LoginRegistroIntegrationTest {
 								name+"_as123@gmail.com",
 								"123456",
 								name+"xxx",
-								new String[]{"user","admi"},
+"admi",
 								new Audit(
 										new Date(),
 										new Date(),

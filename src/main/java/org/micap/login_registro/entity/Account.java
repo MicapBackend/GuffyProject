@@ -49,7 +49,7 @@ public class Account {
     }
 
     public Account setRoles(final String role) {
-        this.role = roles;
+        this.role = role;
         return this;
     }
 
